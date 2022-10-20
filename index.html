@@ -1,168 +1,489 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html>
+
+<!DOCTYPE html>
+<html lang="en">
 <head>
+	<meta charset="UTF-8">
+	<title>Loigen's Resume</title>
+	<script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
+	<style>
+		@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;700&display=swap');
 
-	<title> Reymond Smith Calma nga Hasi. | manindahay ug shaaaa | name@yourdomain.com</title>
-	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+*{
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	box-sizing: border-box;
+	font-family: 'Ubuntu', sans-serif;
+}
 
-	<meta name="keywords" content="" />
-	<meta name="description" content="" />
+body{
+	background: linear-gradient(to right, #3525af, #9153c9);
+}
 
-	<link rel="stylesheet" type="text/css" href="reset-fonts-grids.css" media="all" /> 
-	<link rel="stylesheet" type="text/css" href="resume.css" media="all" />
+.resume{
+	width: 800px;
+	background: #fff;
+	margin: 25px auto;
+	display: flex;
+}
 
+.left{
+	background: #292b2f;
+	width: 250px;
+	padding: 0 20px;
+}
+
+.right{
+	width: calc(100% - 250px);
+}
+
+.left .img_holder{
+	text-align: center;
+	padding: 20px 0;
+}
+
+.left .img_holder img{
+	width: 200px;
+	border-radius: 30px;
+}
+
+.pb{
+	padding-bottom: 20px;
+}
+
+.title{
+	font-size: 24px;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 5px;
+	padding-bottom: 10px;
+	color: #3525af;
+	position: relative;
+	text-align: right;
+	margin-bottom: 15px;
+}
+
+.title:before{
+	content: "";
+	position: absolute;
+	top: 35px;
+	right: 0;
+	width: 50px;
+	height: 3px;
+	background: #3525af;
+}
+
+.left .icon{
+	font-size: 20px;
+	color: #9153c9;
+}
+
+.left .text{
+	color: #9153c9;
+	text-transform: uppercase;
+	font-size: 13px;
+}
+
+.contact .li_wrap{
+	display: flex;
+	align-items: center;
+	width: 100%;
+	margin-bottom: 15px;
+}
+
+.contact .li_wrap .icon{
+	width: 50px;
+	height: 50px;
+	background: #fff;
+	border-radius: 15px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-right: 15px;
+}
+
+.contact .li_wrap .text{
+	width: calc(100% - 50px);
+	word-break: break-word;
+	color: #fff;
+}
+
+.skills ul,
+.hobbies ul{
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+}
+
+.skills .li_wrap,
+.hobbies .li_wrap{
+	width: 100px;
+	height: 100px;
+	margin-bottom: 15px;
+	border-radius: 15px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+.skills .li_wrap{
+	background: #fff;
+}
+
+.skills .li_wrap .text,
+.hobbies .li_wrap .text{
+	margin-top: 5px;
+}
+
+.hobbies .li_wrap{
+	border: 2px solid #fff;
+}
+
+.hobbies .li_wrap .icon,
+.hobbies .li_wrap .text{
+	color: #fff;
+}
+
+.hobbies .li_wrap:hover{
+	background: #fff;
+}
+
+.hobbies .li_wrap:hover .icon,
+.hobbies .li_wrap:hover .text{
+	color: #9153c9;
+}
+
+.header{
+	background: #292b2f;
+	padding: 15px 30px;
+	color: #fff;
+	height: 240px;
+}
+
+.header .name{
+	font-size: 52px;
+	text-transform: uppercase;
+	font-weight: 700;
+	color: #3525af;
+}
+
+.header .role{
+	font-weight: 300;
+	font-size: 20px;
+}
+
+.header .about{
+	margin-top: 20px;
+	line-height: 26px;
+    font-size: 15px;
+}
+
+.right_inner{
+	padding: 30px;
+	color: #292b2f;
+}
+
+.right_inner .education{
+	margin-top: 30px;
+}
+
+.right_inner .li_wrap{
+	display: flex;
+	margin-bottom: 15px;
+}
+
+.right_inner .li_wrap .date {
+    width: 125px;
+    color: #9153c9;
+}
+
+.right_inner .li_wrap .info{
+	width: calc(100%  - 125px);
+	padding-left: 25px;
+	position: relative;
+}
+
+.right_inner .li_wrap .info_title{
+	text-transform: uppercase;
+	font-weight: 700;
+	letter-spacing: 2px;
+	color: #9153c9;
+}
+
+.right_inner .li_wrap .info_com{
+	font-weight: 300;
+	font-size: 14px;
+	margin-top: 3px;
+}
+
+.right_inner .li_wrap .info_cont{
+	margin-top: 15px;
+}
+
+.right_inner .li_wrap .info:before{
+	content: "";
+	position: absolute;
+	top: 3px;
+	left: 0;
+	width: 10px;
+	height: 10px;
+	background: #9153c9;
+	border-radius: 50%;
+}
+
+.right_inner .li_wrap .info:after{
+	content: "";
+	position: absolute;
+	top: 10px;
+	left: 4px;
+	width: 2px;
+	height: 90%;
+	background: #9153c9;
+}
+	</style>
 </head>
 <body>
-
-<div id="doc2" class="yui-t7">
-	<div id="inner">
-	
-		<div id="hd">
-			<div class="yui-gc">
-				<div class="yui-u first">
-					<h1>Reymond C. Calma</h1>
-					<h2>Web Designer, Director, Manager, Artist, SInger</h2>
+	<div class="wrapper">
+		<div class="resume">
+			<div class="left">
+				<div class="img_holder">
+					<img src="loigen.webp" alt="picture">
 				</div>
-
-				<div class="yui-u">
-					<div class="contact-info">
-						<h3><a id="pdf" href="#">Download PDF</a></h3>
-						<h3><a href="mailto:name@yourdomain.com">name@yourdomain.com</a></h3>
-						<h3>(313) - 867-5309</h3>
-					</div><!--// .contact-info -->
+				<div class="contact_wrap pb">
+					<div class="title">
+						Contact
+					</div>
+					<div class="contact">
+						<ul>
+							<li>
+								<div class="li_wrap">
+									<div class="icon"><i class="fas fa-mobile-alt" aria-hidden="true"></i></div>
+									<div class="text">09706289068</div>
+								</div>
+							</li>
+							<li>
+								<div class="li_wrap">
+									<div class="icon"><i class="fas fa-envelope" aria-hidden="true"></i></div>
+									<div class="text">loigen.lariosa@student.passerellesnumeriques.org</div>
+								</div>
+							</li>
+							<li>
+								<div class="li_wrap">
+									<div class="icon"><i class="fas fa-map-signs" aria-hidden="true"></i></div>
+									<div class="text">Lubo, Sogod, cebu</div>
+								</div>
+							</li>
+						</ul>
+					</div>
 				</div>
-			</div><!--// .yui-gc -->
-		</div><!--// hd -->
-
-		<div id="bd">
-			<div id="yui-main">
-				<div class="yui-b">
-
-					<div class="yui-gf">
-						<div class="yui-u first">
-							<h2>Profile</h2>
-						</div>
-						<div class="yui-u">
-							<p class="enlarge">
-								Progressively evolve cross-platform ideas before impactful infomediaries. Energistically visualize tactical initiatives before cross-media catalysts for change. 
-							</p>
-						</div>
-					</div><!--// .yui-gf -->
-
-					<div class="yui-gf">
-						<div class="yui-u first">
-							<h2>Skills</h2>
-						</div>
-						<div class="yui-u">
-
-								<div class="talent">
-									<h2>Web Design</h2>
-									<p>Assertively exploit wireless initiatives rather than synergistic core competencies.	</p>
+				<div class="skills_wrap pb">
+					<div class="title">
+						Skills
+					</div>
+					<div class="skills">
+						<ul>
+							<li>
+								<div class="li_wrap">
+									<div class="icon"><i class="fab fa-html5"></i></div>
+									<div class="text">HTML</div>
 								</div>
-
-								<div class="talent">
-									<h2>Interface Design</h2>
-									<p>Credibly streamline mission-critical value with multifunctional functionalities.	 </p>
+							</li>
+							<li>
+								<div class="li_wrap">
+									<div class="icon"><i class="fab fa-css3-alt"></i></div>
+									<div class="text">CSS</div>
 								</div>
-
-								<div class="talent">
-									<h2>Project Direction</h2>
-									<p>Proven ability to lead and manage a wide variety of design and development projects in team and independent situations.</p>
+							</li>
+							<li>
+								<div class="li_wrap">
+									<div class="icon"><i class="fab fa-js"></i></div>
+									<div class="text">Javascript</div>
 								</div>
+							</li>
+							<li>
+								<div class="li_wrap">
+									<div class="icon"><i class='fab fa-python' style='font-size:24px'></i></div>
+									<div class="text">Python</div>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<div class="hobbies_wrap pb">
+					<div class="title">
+						hobbies
+					</div>
+					<div class="hobbies">
+						<ul>
+							<li>
+								<div class="li_wrap">
+									<div class="icon"><i class="fas fa-book"></i></div>
+									<div class="text">Reading</div>
+								</div>
+							</li>
+							<li>
+								<div class="li_wrap">
+									<div class="icon"><i class="fas fa-music"></i></div>
+									<div class="text">Music</div>
+								</div>
+							</li>
+							<li>
+								<div class="li_wrap">
+									<div class="icon"><i class="fas fa-gamepad"></i></div>
+									<div class="text">Gaming</div>
+								</div>
+							</li>
+							<li>
+								<div class="li_wrap">
+									<div class="icon"><i class="fas fa-tree"></i></div>
+									<div class="text">Gardening</div>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="right">
+				<div class="header">
+					<div class="name_role">
+						<div class="name">
+							Loigen Lariosa
 						</div>
-					</div><!--// .yui-gf -->
-
-					<div class="yui-gf">
-						<div class="yui-u first">
-							<h2>Technical</h2>
+						<div class="role">
+							Software Engineer
 						</div>
-						<div class="yui-u">
-							<ul class="talent">
-								<li>XHTML</li>
-								<li>CSS</li>
-								<li class="last">Javascript</li>
+					</div>
+					<div class="about">
+						It is very important for the customer to pay attention to the adipiscing process. Wisely speaking of the happy option, the body flees from the accusers of the debts of the labors, no one has any distinction but him. Praised often, they are, to be laborious pains distinction?
+					</div>
+				</div>
+				<div class="right_inner">
+					<div class="exp">
+						<div class="title">
+							experience
+						</div>
+						<div class="exp_wrap">
+							<ul>
+								<li>
+									<div class="li_wrap">
+										<div class="date">
+											2022 - Present
+										</div>
+										<div class="info">
+											<p class="info_title">
+												Software engineer
+											</p>
+											<p class="info_com">
+												Facebook
+											</p>
+											<p class="info_cont">
+												It is very important for the customer to pay attention to the adipiscing process. Escape from the pleasures of our business! Architect
+											</p>
+										</div>
+									</div>
+								</li>
+								<li>
+									<div class="li_wrap">
+										<div class="date">
+											2018 - 2024
+										</div>
+										<div class="info">
+											<p class="info_title">
+												Web developer
+											</p>
+											<p class="info_com">
+												Amazon
+											</p>
+											<p class="info_cont">
+												Website without visitors is like a ship lost in the horizon.
+											</p>
+										</div>
+									</div>
+								</li>
+								<li>
+									<div class="li_wrap">
+										<div class="date">
+											2016 - 2018
+										</div>
+										<div class="info">
+											<p class="info_title">
+												Junior web developer
+											</p>
+											<p class="info_com">
+												microsoft
+											</p>
+											<p class="info_cont">
+												Web design is not just about creating pretty layouts. It's about understanding the marketing challenge behind your business.
+											</p>
+										</div>
+									</div>
+								</li>
 							</ul>
-
-							<ul class="talent">
-								<li>Jquery</li>
-								<li>PHP</li>
-								<li class="last">CVS / Subversion</li>
+						</div>
+					</div>
+					<div class="education">
+						<div class="title">
+							Education
+						</div>
+						<div class="education_wrap">
+							<ul>
+								<li>
+									<div class="li_wrap">
+										<div class="date">
+											2022 - 2024
+										</div>
+										<div class="info">
+											<p class="info_title">
+												Certificate of computer tecnology
+											</p>
+											<p class="info_com">
+												University of San Carlos
+											</p>
+										</div>
+									</div>
+								</li>
+                                <br>
+                                <br>
+								<li>
+									<div class="li_wrap">
+										<div class="date">
+											2016 - 2022
+										</div>
+										<div class="info">
+											<p class="info_title">
+												HighSchool
+											</p>
+											<p class="info_com">
+												Liki National HighSchool
+											</p>
+										</div>
+									</div>
+								</li>
+                                <br>
+                                <br>
+								<li>
+									<div class="li_wrap">
+										<div class="date">
+											2010 - 2016
+										</div>
+										<div class="info">
+											<p class="info_title">
+												Primary
+											</p>
+											<p class="info_com">
+												Lubo Integrated school
+											</p>
+											
+										</div>
+									</div>
+								</li>
 							</ul>
-
-							<ul class="talent">
-								<li>OS X</li>
-								<li>Windows XP/Vista</li>
-								<li class="last">Linux</li>
-							</ul>
 						</div>
-					</div><!--// .yui-gf-->
-
-					<div class="yui-gf">
-	
-						<div class="yui-u first">
-							<h2>Experience</h2>
-						</div><!--// .yui-u -->
-
-						<div class="yui-u">
-
-							<div class="job">
-								<h2>Facebook</h2>
-								<h3>Senior Interface Designer</h3>
-								<h4>2005-2007</h4>
-								<p>Intrinsicly enable optimal core competencies through corporate relationships. Phosfluorescently implement worldwide vortals and client-focused imperatives. Conveniently initiate virtual paradigms and top-line convergence. </p>
-							</div>
-
-							<div class="job">
-								<h2>Apple Inc.</h2>
-								<h3>Senior Interface Designer</h3>
-								<h4>2005-2007</h4>
-								<p>Progressively reconceptualize multifunctional "outside the box" thinking through inexpensive methods of empowerment. Compellingly morph extensive niche markets with mission-critical ideas. Phosfluorescently deliver bricks-and-clicks strategic theme areas rather than scalable benefits. </p>
-							</div>
-
-							<div class="job">
-								<h2>Microsoft</h2>
-								<h3>Principal and Creative Lead</h3>
-								<h4>2004-2005</h4>
-								<p>Intrinsicly transform flexible manufactured products without excellent intellectual capital. Energistically evisculate orthogonal architectures through covalent action items. Assertively incentivize sticky platforms without synergistic materials. </p>
-							</div>
-
-
-							<div class="job last">
-								<h2>International Business Machines (IBM)</h2>
-								<h3>Lead Web Designer</h3>
-								<h4>2001-2004</h4>
-								<p>Globally re-engineer cross-media schemas through viral methods of empowerment. Proactively grow long-term high-impact human capital and highly efficient innovation. Intrinsicly iterate excellent e-tailers with timely e-markets.</p>
-							</div>
-
-						</div><!--// .yui-u -->
-					</div><!--// .yui-gf -->
-
-
-					<div class="yui-gf last">
-						<div class="yui-u first">
-							<h2>Education</h2>
-						</div>
-						<div class="yui-u">
-							<h2>Indiana University - Bloomington, Indiana</h2>
-							<h3>Dual Major, Economics and English &mdash; <strong>4.0 GPA</strong> </h3>
-						</div>
-					</div><!--// .yui-gf -->
-
-
-				</div><!--// .yui-b -->
-			</div><!--// yui-main -->
-		</div><!--// bd -->
-
-		<div id="ft">
-			<p>Jonathan Doe &mdash; <a href="mailto:name@yourdomain.com">name@yourdomain.com</a> &mdash; (313) - 867-5309</p>
-		</div><!--// footer -->
-
-	</div><!-- // inner -->
-
-
-</div><!--// doc -->
-
-
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </body>
 </html>
-
