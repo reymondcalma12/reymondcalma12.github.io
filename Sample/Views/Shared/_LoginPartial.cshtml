@@ -1,0 +1,9 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@inject SignInManager<AppUser> signManager;
+
+@if(signManager.IsSignedIn(User)){
+
+}
+
+
+<a asp-action="Logout" asp-controller="Account">Logout</a>
