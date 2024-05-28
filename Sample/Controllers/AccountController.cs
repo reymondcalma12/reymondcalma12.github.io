@@ -21,8 +21,13 @@ namespace Sample.Controllers
             this.db = db;
         }
 
-        public IActionResult Login()
+        public IActionResult Login(string? success)
         {
+            if (!string.IsNullOrEmpty(success))
+            {
+                ViewData["SuccessMessage"] = success;
+            }
+
             return View();
         }
 
@@ -44,11 +49,15 @@ namespace Sample.Controllers
                          HttpContext.Session.SetString("UsersId", user.Id);
                          user.Online = true;
 
+                           
+
                         db.Users.Update(user);
                         db.SaveChanges();
-                    }
+                    } 
 
-                    return RedirectToAction("Index", "Home");
+
+
+                    return RedirectToAction("Index", "Home" , user);
                 }
                 ModelState.AddModelError("", "Wrong Credintials!");
                 return View(model);
@@ -82,8 +91,8 @@ namespace Sample.Controllers
                 if (res.Succeeded)
                 {
                     await signInManager.SignInAsync(user, false);
-                   
-                    return RedirectToAction("Login", "Account");
+              
+                    return RedirectToAction("Login", "Account", new { success = "Successfully Registered!" });
                 }
 
                 foreach (var error in res.Errors)
@@ -126,6 +135,37 @@ namespace Sample.Controllers
             var user = HttpContext.Session.GetString("UsersId");
              
             return Ok(user);
+        }
+
+
+        public IActionResult GetAllUsers()
+        {
+
+           var userId = HttpContext.Session.GetString("UsersId");
+
+            var allUsers = db.Users.Where(a => a.Id != userId).ToList();
+
+            return Json(allUsers);
+        }
+
+
+        public IActionResult GetMessages(string id)
+        {
+
+            if (id != null)
+            {
+                var currentUserId = HttpContext.Session.GetString("UsersId").ToString();
+
+                var message = db.Message.Where(a => (a.ReceiverId == id && a.SenderId == currentUserId) || (a.ReceiverId == currentUserId && a.SenderId == id))
+                    .OrderByDescending(a => a.Date).ToList();
+
+                return Json(message);
+            }
+            else
+            {
+                return Json(null);
+            }
+
         }
 
     }

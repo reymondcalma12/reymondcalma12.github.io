@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Sample.Data;
 using Sample.Models;
 using System.Diagnostics;
 
@@ -10,19 +12,21 @@ namespace Sample.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
+
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
+   
         }
 
-        public IActionResult Index()
+        public IActionResult Index(AppUser user)
         {
 
-            var user = HttpContext.Session.GetString("UsersId");
-           
-            ViewBag.CurrentUser = user;
+            var userID = HttpContext.Session.GetString("UsersId");
+        
+            ViewBag.CurrentUserID = userID;
 
-            return View();
+            return View(user);
         }
 
         public IActionResult Privacy()

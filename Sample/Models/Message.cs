@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Sample.Models
 {
@@ -14,6 +15,7 @@ namespace Sample.Models
 
         public string ReceiverId { get; set; }
 
+        [Column(TypeName = "datetime2(7)")]
         public DateTime Date { get; set; }
 
     }

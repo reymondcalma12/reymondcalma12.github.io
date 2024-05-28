@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Sample.Data;
 
@@ -11,9 +12,11 @@ using Sample.Data;
 namespace Sample.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240528063900_wad")]
+    partial class wad
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -237,7 +240,7 @@ namespace Sample.Migrations
 
                     b.Property<DateTime>("Date")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2(7)")
+                        .HasColumnType("datetime2")
                         .HasDefaultValueSql("GETDATE()");
 
                     b.Property<string>("ReceiverId")

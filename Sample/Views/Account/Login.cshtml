@@ -4,21 +4,76 @@
 
 @{
     ViewData["Title"] = "Login";
+    var message = ViewData["SuccessMessage"] as string;
 }
-<div class="container d-flex flex-column align-items-center justify-content-center " 
-   style="border:1px solid black; height:90vh;">
-    <form asp-action="Login" method="post">
-        <div asp-validation-summary="ModelOnly"></div>
-        <input asp-for="Username" />
-        <span asp-validation-for="Username" class="text-danger"></span><br>
-        <input asp-for="Password" />
-        <span asp-validation-for="Password" class="text-danger"></span><br>
-        <input asp-for="RememberMe" />@Html.DisplayNameFor(a => a.RememberMe)<br>
-        <a asp-action="Register" asp-controller="Account">Create Account</a><br>
-        <input type="submit" value="Login" />
-    </form>
+
+@if (!string.IsNullOrEmpty(message))
+{
+    <div class="alert alert-success d-flex justify-content-between align-items-center">
+        <strong>@message</strong>
+        <button type="button" class="close btn btn-outline-success" data-bs-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+
+<div class="container-fluid d-flex flex-row h-100 w-100 justify-content-between align-items-center body">
+
+     <div class="container-fluid d-flex flex-row img" style="height:60%; width:50%; ">
+        <img src="~/images/logi.jpg" />
+    </div>
+    <div class="container-fluid d-flex justify-content-center align-items-center div2" >
+        <form asp-action="Login" method="post" >
+            <h2 class="text-center mb-5">Login</h2>
+            <div asp-validation-summary="ModelOnly"></div>
+            <input asp-for="Username" class="form-control" placeholder="Username/Email" autocomplete="on"/>
+            <span asp-validation-for="Username" class="text-danger"></span><br>
+            <input asp-for="Password" class="form-control" placeholder="Password" />
+            <span asp-validation-for="Password" class="text-danger mb-1"></span>
+            <div>
+                <input asp-for="RememberMe" /> @Html.DisplayNameFor(a => a.RememberMe)
+            </div><br />
+            <a asp-action="Register" asp-controller="Account" class="text-center">Create Account</a><br>
+            <input type="submit" value="Login" class="btn btn-primary"/>
+        </form>
+    </div>
 </div>
 
+<style>
+    img {
+        width: 100%;
+        position: relative;
+        border-radius: 15px
+    }
+    .div2{
+        width: 35%;
+        height: 80%;
+    }
+    form{
+        border: 1px solid #6095A2;
+        height:90%; 
+        width:90%;
+        display:flex;
+        flex-direction:column;
+        justify-content:center;
+        border-radius: 25px;
+        padding:15%;
+    }
+
+    .alert {
+        position: fixed;
+        top: 10px;
+        right: 20px;
+        z-index: 1000;
+        width:97%;
+    }
+
+    @@media screen and (max-width: 992px) {
+        .body {
+            flex-direction: column;
+        }
+    }
+</style>
 
 @section Scripts{
     @{

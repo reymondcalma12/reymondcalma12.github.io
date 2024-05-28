@@ -12,8 +12,8 @@ using Sample.Data;
 namespace Sample.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240524070841_ini")]
-    partial class ini
+    [Migration("20240528064513_wada")]
+    partial class wada
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -239,7 +239,9 @@ namespace Sample.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2(7)")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<string>("ReceiverId")
                         .IsRequired()

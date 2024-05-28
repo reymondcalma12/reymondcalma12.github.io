@@ -1,8 +1,173 @@
-﻿@{
+﻿@using Sample.Models
+
+@model AppUser
+
+@{
     ViewData["Title"] = "Home Page";
     Layout = "_LoginLayout";
-
-    var currentUserId = ViewBag.CurrentUser;
 }
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <div class="container-fluid h-100 index-body d-flex justify-content-center">
+    <div class="row w-100 d">
+        <div class="col-3" style="border:1px solid black;">
 
-<h1>@currentUserId</h1>
+        </div>
+        <div class="col-7 messages" >
+            <div class="row h-25 d-flex pt-4 flex-column text-center username">
+                <h1 id="userName"></h1>
+            </div>
+            <div class="row h-75 d-flex justify-content-center align-items-end messageBody">
+                    <div class="col-8 h-100 d-flex flex-column justify-content-end" style="border:1px solid black;">
+
+                        <div class="d-flex h-25" style="border:1px solid black;">
+
+                        </div>
+
+                       <div class="d-flex h-25" style="border:1px solid black;">
+
+                        </div>
+                                        <div class="d-flex h-25" style="border:1px solid black;">
+
+                        </div>
+                        <form class="d-flex inputField">
+                                <input type="text" class="form-control form-control autoresize" />
+                                <button type="submit" class="btn btn-outline-dark"><i class="material-icons">send</i></button>
+                        </form>          
+                    </div>
+            </div>
+        </div>
+        <div class="col-2 d-flex align-items-center flex-column justify-content-end justify-content-between"  style="border:1px solid black;">
+
+           <h4 class="text-center pt-2 pb-2 border-bottom">Users</h4>
+
+                <div class="users" id="usersList">
+                <a>Marvin</a>
+                <a>Marvin</a>
+                <a>Marvin</a>
+                <a>Marvin</a>
+                <a>Marvin</a>
+                <a>Marvin</a>
+                <a>Marvin</a>
+                <a>Marvin</a>
+               </div>
+
+        </div>
+    </div>
+  </div>     
+
+  <style>
+
+
+    .autoresize:focus{
+        box-shadow: 0 0 0 0.1rem wheat, 0 0 0 0.25rem black;
+    }
+
+    form textarea{
+        scrollbar-width : thin;
+    }
+
+    .inputField{
+
+    }
+
+      .users a{
+        text-decoration: none;
+        color: black;
+        text-align: center;
+        border-radius: 5px;
+        border: 1px solid black;
+        padding: 5px 0;
+        margin-top: 1%;
+
+      }
+      .users a:hover{
+        cursor: pointer;
+        color: gray;
+   
+      }
+
+      .users{
+        display: flex;
+        height: 70vh;
+        width:100%;
+        scrollbar-width: thin;
+        scrollbar-color: gray white;
+        overflow: auto;
+        flex-direction: column-reverse;
+      }
+
+  </style>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+
+        GetAllUsers();
+
+        function GetAllUsers() {
+            $.ajax({
+                type: 'GET',
+                url: "/Account/GetAllUsers",
+                dataType: "json",
+                success: function (result) {
+                    if (result != null && result != undefined) {
+                        for (let i = 0; i < result.length; i++) {
+
+                            let users = result[i];
+ 
+                            let userLink = $("<a>", {
+                                href: "#",
+                                text: users.name,
+                                class: "user-link" ,
+                                click: function () {
+                                    GetMessages(users.id);
+
+                                    $("#userName").text(users.name);
+                                }
+                            });
+
+                            
+
+                            $("#usersList").append(userLink);
+                     
+                        }
+                    } 
+                    else {
+                        console.log("No data");
+                    }
+                },
+                error: function (req, status, error) {
+                    console.log(status);
+                }
+            });
+        }
+
+        
+        function GetMessages(userid) {
+
+            $.ajax({
+                type: 'GET',
+                url: "/Account/GetMessages?id=" + userid,
+                dataType: "json",
+                success: function (result) {
+                    if (result != null && result != undefined) {
+                        let results;
+                        for (let i = 0; i < result.length; i++){
+                            results = result[i];
+                            console.log(results.text);
+
+                        }
+
+                    }
+                    else {
+                        console.log("No data");
+                    }
+                },
+                error: function (req, status, error) {
+                    console.log(status);
+                }
+            });
+
+        }
+         
+    });
+</script>
