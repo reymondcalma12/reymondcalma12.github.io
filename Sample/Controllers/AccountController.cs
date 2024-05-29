@@ -21,6 +21,7 @@ namespace Sample.Controllers
             this.db = db;
         }
 
+
         public IActionResult Login(string? success)
         {
             if (!string.IsNullOrEmpty(success))
@@ -48,14 +49,10 @@ namespace Sample.Controllers
                     {
                          HttpContext.Session.SetString("UsersId", user.Id);
                          user.Online = true;
-
-                           
-
+                                               
                         db.Users.Update(user);
                         db.SaveChanges();
                     } 
-
-
 
                     return RedirectToAction("Index", "Home" , user);
                 }
@@ -157,14 +154,42 @@ namespace Sample.Controllers
                 var currentUserId = HttpContext.Session.GetString("UsersId").ToString();
 
                 var message = db.Message.Where(a => (a.ReceiverId == id && a.SenderId == currentUserId) || (a.ReceiverId == currentUserId && a.SenderId == id))
-                    .OrderByDescending(a => a.Date).ToList();
+                    .OrderBy(a => a.Date).ToList();
 
-                return Json(message);
+                if (message != null)
+                {
+                    return Json(message);
+                }
+                else
+                {
+                    return Json(null);
+                }
+          
             }
             else
             {
                 return Json(null);
             }
+
+        }
+
+
+        public IActionResult SendMessage(string receiverId, string message)
+        {
+
+            var senderId = HttpContext.Session.GetString("UsersId").ToString();
+
+            Message mess = new Message
+            {
+                Text = message,
+                SenderId = senderId,
+                ReceiverId = receiverId
+            };
+
+           db.Message.Add(mess);
+           db.SaveChanges();
+            string success = "Successfully Send";
+            return Ok(success);  
 
         }
 

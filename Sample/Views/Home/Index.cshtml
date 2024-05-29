@@ -5,7 +5,9 @@
 @{
     ViewData["Title"] = "Home Page";
     Layout = "_LoginLayout";
+    var sender = ViewBag.CurrentUserID;
 }
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <div class="container-fluid h-100 index-body d-flex justify-content-center">
     <div class="row w-100 d">
@@ -17,23 +19,16 @@
                 <h1 id="userName"></h1>
             </div>
             <div class="row h-75 d-flex justify-content-center align-items-end messageBody">
-                    <div class="col-8 h-100 d-flex flex-column justify-content-end" style="border:1px solid black;">
-
-                        <div class="d-flex h-25" style="border:1px solid black;">
-
-                        </div>
-
-                       <div class="d-flex h-25" style="border:1px solid black;">
-
-                        </div>
-                                        <div class="d-flex h-25" style="border:1px solid black;">
-
-                        </div>
-                        <form class="d-flex inputField">
-                                <input type="text" class="form-control form-control autoresize" />
-                                <button type="submit" class="btn btn-outline-dark"><i class="material-icons">send</i></button>
-                        </form>          
+                    <div class="col-8 chat-container" style="border:1px solid black;">
+                            
+               
                     </div>
+                    <div class="row h-10 inputDiv">
+                        <form class="d-flex inputField">
+                            <input type="text" class="form-control form-control autoresize" id="messageValue" autocomplete="off"/>
+                            <button class="btn btn-outline-dark buttonSend"><i class="material-icons">send</i></button>
+                        </form>
+                      </div>
             </div>
         </div>
         <div class="col-2 d-flex align-items-center flex-column justify-content-end justify-content-between"  style="border:1px solid black;">
@@ -41,14 +36,7 @@
            <h4 class="text-center pt-2 pb-2 border-bottom">Users</h4>
 
                 <div class="users" id="usersList">
-                <a>Marvin</a>
-                <a>Marvin</a>
-                <a>Marvin</a>
-                <a>Marvin</a>
-                <a>Marvin</a>
-                <a>Marvin</a>
-                <a>Marvin</a>
-                <a>Marvin</a>
+
                </div>
 
         </div>
@@ -56,7 +44,14 @@
   </div>     
 
   <style>
-
+    .inputDiv{
+        width:73%;
+    }
+    .NoMessageResult{
+       align-self:center;
+      padding-top:5%;
+       
+    }
 
     .autoresize:focus{
         box-shadow: 0 0 0 0.1rem wheat, 0 0 0 0.25rem black;
@@ -64,10 +59,6 @@
 
     form textarea{
         scrollbar-width : thin;
-    }
-
-    .inputField{
-
     }
 
       .users a{
@@ -92,16 +83,74 @@
         width:100%;
         scrollbar-width: thin;
         scrollbar-color: gray white;
-        overflow: auto;
+        overflow-y: auto;
         flex-direction: column-reverse;
       }
 
+    .chat-container {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        overflow-y:auto;
+        height:61.5vh;
+        scrollbar-width:thin;
+    }
+
+    .chat-container::-webkit-scrollbar{
+        display:none;
+    }
+    .chat-message {
+        display: flex;
+        flex-direction: column;
+        max-width: 80%;
+        margin-bottom: 10px;
+        background:black;
+    }
+
+        .chat-message.sent {
+            align-self: flex-end;
+            background-color: #e6f1f2;
+            border-radius: 20px 20px 0 20px;
+            padding: 10px 15px;
+        }
+
+        .chat-message.received {
+            background-color: #f7f7f7;
+            border-radius: 20px 20px 20px 0;
+            padding: 10px 15px;
+
+        }
+
+    .chat-message.sent .message-time{
+        font-size: 12px;
+        color: #999;
+        margin-top: 5px;
+        display:flex;
+        justify-content:end;
+    }
+    .chat-message.received .message-time{
+        font-size: 12px;
+        color: #999;
+        margin-top: 5px;
+ 
+    }
   </style>
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+
 <script>
     $(document).ready(function () {
-
+   
         GetAllUsers();
+        let receiverId;
+        setInterval(function () {
+            GetMessages(receiverId);    
+        }, 1000);
+
+        $(".buttonSend").on("click", function () {  
+            SendMessage(receiverId);
+            GetMessages(receiverId);
+            scrollChatContainer();
+        });
 
         function GetAllUsers() {
             $.ajax({
@@ -120,7 +169,7 @@
                                 class: "user-link" ,
                                 click: function () {
                                     GetMessages(users.id);
-
+                                    receiverId = users.id;
                                     $("#userName").text(users.name);
                                 }
                             });
@@ -143,31 +192,72 @@
 
         
         function GetMessages(userid) {
-
+   
             $.ajax({
                 type: 'GET',
                 url: "/Account/GetMessages?id=" + userid,
                 dataType: "json",
                 success: function (result) {
-                    if (result != null && result != undefined) {
-                        let results;
-                        for (let i = 0; i < result.length; i++){
-                            results = result[i];
-                            console.log(results.text);
 
-                        }
+                    var chatContainer = $('.chat-container');
+           
+                    if(result.length > 0){
+                        chatContainer.empty();
+                        $.each(result, function (index, msg) {                 
+                            var messageClass = msg.senderId === '@sender' ? 'sent' : 'received';
+                            var messageHtml = `
+                                <div class="chat-message ${messageClass}">
+                                      <div class="message-content">${msg.text}</div>
+                                      <div class="message-time">${new Date(msg.date).toLocaleTimeString()}</div>
+                                </div>
+                              `;
+                            chatContainer.append(messageHtml);
+                        });
+                        scrollChatContainer();
+                    } 
+                    else{
+                        chatContainer.empty();
+                        var message = `<div class="NoMessageResult">
+                                                <h3>No Messages for this Person</h3>
+                                          </div>`;
+                        chatContainer.append(message);
+                    }
 
-                    }
-                    else {
-                        console.log("No data");
-                    }
+
                 },
                 error: function (req, status, error) {
                     console.log(status);
                 }
             });
-
         }
-         
+
+        function SendMessage(userid) {
+
+            var messageValue = $("#messageValue").val();
+      
+            $.ajax({
+                type: 'GET',
+                url: "/Account/SendMessage",
+                data: {
+                    receiverId: receiverId,
+                    message: messageValue
+                },
+                dataType: "json",
+                success: function (result) {
+                    $("#messageValue").val("");
+                },
+                error: function (req, status, error) {
+                    console.log(status);
+                }
+            });
+        }
+
+        function scrollChatContainer() {
+            var chatContainer = $('.chat-container');
+            if (chatContainer.is(':visible')) {
+                chatContainer.scrollTop(chatContainer[0].scrollHeight);
+            }
+        }
+
     });
 </script>
