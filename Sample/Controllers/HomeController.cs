@@ -23,7 +23,8 @@ namespace Sample.Controllers
         {
 
             var userID = HttpContext.Session.GetString("UsersId");
-        
+    
+
             ViewBag.CurrentUserID = userID;
 
             return View(user);
