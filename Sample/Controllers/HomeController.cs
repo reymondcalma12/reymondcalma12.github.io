@@ -7,28 +7,38 @@ using System.Diagnostics;
 
 namespace Sample.Controllers
 {
+
     [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly AppDbContext dbContext;
 
-
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, AppDbContext dbContext)
         {
             _logger = logger;
-   
+            this.dbContext = dbContext;
         }
 
-        public IActionResult Index(AppUser user)
+        public IActionResult Index()
         {
+            var user = HttpContext.Session.GetString("UsersId");
 
-            var userID = HttpContext.Session.GetString("UsersId");
-    
+            if (user == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            else
+            {
 
-            ViewBag.CurrentUserID = userID;
+                AppUser model = dbContext.Users.FirstOrDefault(a => a.Id == user);
 
-            return View(user);
+                return View(model);
+
+            }
+            
         }
+
 
         public IActionResult Privacy()
         {

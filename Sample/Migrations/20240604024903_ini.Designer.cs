@@ -12,8 +12,8 @@ using Sample.Data;
 namespace Sample.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240528064513_wada")]
-    partial class wada
+    [Migration("20240604024903_ini")]
+    partial class ini
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

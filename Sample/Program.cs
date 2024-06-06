@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Sample.Data;
 using Sample.Hubs;
 using Sample.Models;
+
 
 namespace Sample
 {
@@ -15,9 +17,6 @@ namespace Sample
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
-
-            builder.Services.AddDbContext<AppDbContext>(options =>
-            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             builder.Services.AddIdentity<AppUser, IdentityRole>(
                     options =>
@@ -32,6 +31,13 @@ namespace Sample
                 .AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
 
             builder.Services.AddSignalR();
+
+            //builder.Services.AddSingleton<UserTableDependency>();
+            //builder.Services.AddSingleton<ChatHub>();
+
+            builder.Services.AddDbContext<AppDbContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 
             builder.Services.AddSession(options =>
             {
@@ -59,11 +65,21 @@ namespace Sample
 
             app.UseSession();
 
-            app.MapHub<ChatHub>("/chatHub");
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapHub<ChatHub>("/chatHub");
+            });
+
 
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Account}/{action=Login}/{id?}");
+
+            //var userTableDependency = app.Services.GetService<UserTableDependency>();
+            //userTableDependency.StartTableDependency();
 
             app.Run();
         }

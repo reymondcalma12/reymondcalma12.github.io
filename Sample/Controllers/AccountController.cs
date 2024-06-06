@@ -52,9 +52,9 @@ namespace Sample.Controllers
                                                
                         db.Users.Update(user);
                         db.SaveChanges();
-                    } 
+                    }
 
-                    return RedirectToAction("Index", "Home" , user);
+                    return RedirectToAction("Index", "Home");
                 }
                 ModelState.AddModelError("", "Wrong Credintials!");
                 return View(model);
@@ -190,6 +190,15 @@ namespace Sample.Controllers
            db.SaveChanges();
             string success = "Successfully Send";
             return Ok(success);  
+
+        }
+
+        public IActionResult ViewUserProfile(string id)
+        {
+
+            var user = db.Users.SingleOrDefault(a => a.Id == id);
+
+            return Json(user);
 
         }
 

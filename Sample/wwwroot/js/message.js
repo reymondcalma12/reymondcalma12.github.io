@@ -1,27 +1,90 @@
 ﻿$(document).ready(function () {
 
-    let receiverId;
-    let connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
+    setInterval(function () {
+/*        GetNewMesage();*/
+        updateUserStatus();
+    }, 1000);
 
+    let receiverId = "";
+
+    let connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
     let curentUser = $("#currentUserId").val();
 
+    if (receiverId != "") {
+        GetMessages(receiverId);
+    }
+
+    $("#profileLink").on("click", function () {
+
+        $.ajax({
+            type: 'GET',
+            url: "/Account/ViewUserProfile",
+            data: { id: receiverId },
+            dataType: "json",
+            success: function (result) {
+                console.log(result);
+            },
+            error: function (req, status, error) {
+                console.log(status);
+            }
+        });
+
+    });
 
 
     connection.on("ReceiveAllUsers", function (users) {
-        $('#usersList').empty();
+        $("#usersList").empty();
         users.forEach(function (user) {
+
+            let dotColor = user.online ? 'green' : 'red';
 
             let userLink = $("<a>", {
                 href: "#",
-                text: user.name,
-                class: "user-link",
+                html: `<span style='color: ${dotColor}; font-size:20px;'>\u2022</span>&nbsp&nbsp&nbsp${user.name}`,
+                class: "user-link user-link-" + user.id,
                 click: function () {
-                    GetMessages(user.id);
                     receiverId = user.id;
                     $("#userName").text(user.name);
+                    $("#profileLink").text("View Profile");
+                    connection.invoke("GetMessages", user.id);
                 }
             });
+
+            setTimeout(function () {
+                user.online = false;
+                dotColor = 'red';
+                userLink.html(`<span style='color: ${dotColor}; font-size:20px;'>\u2022</span>&nbsp&nbsp&nbsp${user.name}`);
+            }, 10000);
+
+
             $("#usersList").append(userLink);
+        });
+    });
+
+    connection.on("NotifyMessage", function (messages) {
+
+        const today = new Date();
+        const timeString = today.toTimeString();
+
+        const timeComponents = timeString.split(' ')[0].split(':');
+        const currentHour = parseInt(timeComponents[0], 10);
+        const currentMinutes = parseInt(timeComponents[1], 10);
+
+        messages.forEach(function (msg) {
+
+            const messageDate = new Date(msg.date);
+            const messageHourMinute = messageDate.getHours() * 60 + messageDate.getMinutes();
+
+            console.log(msg.date);
+            console.log(currentHour);
+            console.log(currentMinutes);
+
+            if (currentHourMinute == messageHourMinute) {
+                console.log("The message was sent at the same time (hour and minute) as the current time!");
+            } else {
+                console.log("The message was not sent at the same time (hour and minute) as the current time.");
+            }
+
         });
     });
 
@@ -88,22 +151,34 @@
 
     $(".buttonSend").on("click", function () {
 
+        event.preventDefault();
+
         var messageValue = $("#messageValue").val();
 
-        if (messageValue != "") {
-            GetMessages(receiverId);
-            connection.invoke("SendMessage", receiverId, messageValue)
-                .catch(function (err) {
-                    return console.error(err.toString());
-                });
-            $("#messageValue").val("");
+        if (receiverId != "") {
+
+            if (messageValue != "") {
+                connection.invoke("SendMessage", receiverId, messageValue)
+                    .catch(function (err) {
+                        return console.error(err.toString());
+                    });
+                $("#messageValue").val("");
+
+                GetMessages(receiverId);
+            }
+            else {
+                alert("PLease Input a Message!");
+            }
+
         }
         else {
-            alert("PLease Input a Message!");
+            alert("PLease Select User!");
         }
-
-
     });
+
+    function updateUserStatus() {
+        GetAllUsers();
+    }
 
     function GetAllUsers() {
         connection.invoke("GetAllUsers")
@@ -119,6 +194,13 @@
             });
     }
 
+    function GetNewMesage() {
+        connection.invoke("GetNewMessages")
+            .catch(function (err) {
+                return console.error(err.toString());
+            });
+    }
+
     function scrollChatContainer() {
         var chatContainer = $('.chat-container');
         if (chatContainer.is(':visible')) {
@@ -128,8 +210,10 @@
 
     connection.start().then(function () {
         GetAllUsers();
-    }).catch(function (err) {
-        return console.error(err.toString());
+        GetNewMesage();
+    })
+    .catch(function (err) {
+        console.error(err.toString());
     });
 
 });
