@@ -32,6 +32,28 @@ namespace Sample.Hubs
 
         }
 
+        //public async Task GetUsersWithMessages()
+        //{
+        //    try
+        //    {
+        //        var userId = Context.GetHttpContext().Session.GetString("UsersId");
+
+        //        var messages = _dbContext.Message.Where(a => )
+
+        //        var allUsers = _dbContext.Users.Where((u => u.Id != userId) && ()).ToList();
+
+        //        await Clients.Caller.SendAsync("ReceiveAllUsers", allUsers);
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine($"Error occurred in GetAllUsers: {ex.Message}");
+        //        await Clients.Others.SendAsync("Error", "An error occurred while fetching users.");
+        //    }
+
+        //}
+
+
         public async Task GetMessages(string receiverId)
         {
             var currentUserId = Context.GetHttpContext().Session.GetString("UsersId");

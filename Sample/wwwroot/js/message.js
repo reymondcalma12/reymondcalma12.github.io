@@ -1,18 +1,19 @@
-﻿$(document).ready(function () {
+﻿let receiverId = "";
 
-    setInterval(function () {
-/*        GetNewMesage();*/
-        updateUserStatus();
-    }, 1000);
 
-    let receiverId = "";
+if (receiverId != "") {
+    GetMessages(receiverId);
+}
+
+$(document).ready(function () {
 
     let connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
     let curentUser = $("#currentUserId").val();
 
-    if (receiverId != "") {
-        GetMessages(receiverId);
-    }
+    setInterval(function () {
+        updateUserStatus();
+    }, 1000);
+
 
     $("#profileLink").on("click", function () {
 
@@ -31,6 +32,29 @@
 
     });
 
+    //$("#updateProfile").on("click", function () {
+
+    //    event.preventDefault();
+
+    //    var profile = $("#profileString").val();
+    //    var name = $("#Name").val();
+    //    var email = $("#Email").val();
+    //    var number = $("#Number").val();
+
+    //    $.ajax({
+    //        type: 'GET',
+    //        url: "/Account/UpdateProfile",
+    //        data: { profil: profile, nam: name, emai: email, numbe: number },
+    //        dataType: "json",
+    //        success: function (result) {
+    //            alert(result);
+    //        },
+    //        error: function (req, status, error) {
+    //            console.log(status);
+    //        }
+    //    });
+
+    //});
 
     connection.on("ReceiveAllUsers", function (users) {
         $("#usersList").empty();
@@ -137,7 +161,7 @@
                 chatContainer.append(messageHtml);
                 scrollChatContainer();
             });
-         
+
         }
         else {
             chatContainer.empty();
@@ -212,8 +236,8 @@
         GetAllUsers();
         GetNewMesage();
     })
-    .catch(function (err) {
-        console.error(err.toString());
-    });
+        .catch(function (err) {
+            console.error(err.toString());
+        });
 
 });

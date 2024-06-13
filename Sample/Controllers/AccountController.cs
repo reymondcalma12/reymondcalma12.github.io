@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Sample.Data;
 using Sample.Models;
@@ -13,12 +14,13 @@ namespace Sample.Controllers
         private readonly SignInManager<AppUser> signInManager;
         private readonly UserManager<AppUser> userManager;
         private readonly AppDbContext db;
-
-        public AccountController(SignInManager<AppUser> signInManager, UserManager<AppUser> userManager, AppDbContext db)
+        private readonly IWebHostEnvironment webHostEnvironment;
+        public AccountController(SignInManager<AppUser> signInManager, UserManager<AppUser> userManager, AppDbContext db, IWebHostEnvironment webHostEnvironment)
         {
             this.signInManager = signInManager;
             this.userManager = userManager;
             this.db = db;
+            this.webHostEnvironment = webHostEnvironment;
         }
 
 
@@ -67,6 +69,41 @@ namespace Sample.Controllers
         public IActionResult Register()
         {
             return View();
+        }
+
+        public IActionResult UpdateProfile(IFormFile image, string name, string email, string number)
+        {
+
+            var currentUserId = HttpContext.Session.GetString("UsersId").ToString();
+
+            var user =  db.Users.FirstOrDefault(a => a.Id == currentUserId);
+
+            if (image != null)
+            {
+                var profileName = Guid.NewGuid().ToString() + image.FileName;
+
+                if (image != null && image.Length > 0)
+                {
+                    var imageFilePath = Path.Combine(webHostEnvironment.WebRootPath, "profile", profileName);
+
+                    using (var fileStream = new FileStream(imageFilePath, FileMode.Create))
+                    {
+                        image.CopyTo(fileStream);
+                    }
+
+                }
+                user.Profile = profileName;
+            }
+
+            user.Name = name;
+            user.Email = email;
+            user.PhoneNumber = number;  
+
+            var updated = "Profile Updated Successfully!";
+            HttpContext.Session.SetString("updatedProfile", updated);
+
+            db.SaveChanges();
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpPost]

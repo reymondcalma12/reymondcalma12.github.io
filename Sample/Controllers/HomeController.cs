@@ -22,20 +22,29 @@ namespace Sample.Controllers
 
         public IActionResult Index()
         {
-            var user = HttpContext.Session.GetString("UsersId");
+   
+                var user = HttpContext.Session.GetString("UsersId");
 
-            if (user == null)
-            {
-                return RedirectToAction("Login", "Account");
-            }
-            else
-            {
+                if (user == null)
+                {
+                    return RedirectToAction("Login", "Account");
+                }
+                else
+                {
+                    var up = HttpContext.Session.GetString("updatedProfile");
 
-                AppUser model = dbContext.Users.FirstOrDefault(a => a.Id == user);
+                    if (up != null)
+                    {
+                          ViewData["ProfileUpdated"] = HttpContext.Session.GetString("updatedProfile");
+                    }
+         
 
-                return View(model);
+                    AppUser model = dbContext.Users.FirstOrDefault(a => a.Id == user);
+                    
+                    return View(model);
 
-            }
+                }
+
             
         }
 

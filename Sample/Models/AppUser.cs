@@ -8,5 +8,7 @@ namespace Sample.Models
 
         public bool Online { get; set; }
 
+        public string? Profile {  get; set; }
+
     }
 }
