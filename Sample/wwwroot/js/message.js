@@ -15,22 +15,6 @@ $(document).ready(function () {
     }, 1000);
 
 
-    $("#profileLink").on("click", function () {
-
-        $.ajax({
-            type: 'GET',
-            url: "/Account/ViewUserProfile",
-            data: { id: receiverId },
-            dataType: "json",
-            success: function (result) {
-                console.log(result);
-            },
-            error: function (req, status, error) {
-                console.log(status);
-            }
-        });
-
-    });
 
     //$("#updateProfile").on("click", function () {
 
@@ -55,6 +39,72 @@ $(document).ready(function () {
     //    });
 
     //});
+
+
+
+    $("#profileLink").on("click", function () {
+            $.ajax({
+                type: 'GET',
+                url: "/Account/ViewUserProfile",
+                data: { id: receiverId },
+                dataType: "json",
+                success: function (result) {
+                    console.log(result);
+                    $("#usersName").text(result.name);
+                    $("#usersUserName").text(result.userName);
+                    $("#usersNumber").text(result.phoneNumber);
+                    $("#edit").hide();
+                },
+                error: function (req, status, error) {
+                    console.log(status);
+                }
+            });
+
+    });
+
+    $(".searchBtn").on("click", function () {
+
+       var text = $("#searchText").val();
+
+        if (text != "") {
+            $.ajax({
+                type: 'GET',
+                url: "/Account/ViewUserProfile",
+                data: { id: receiverId },
+                dataType: "json",
+                success: function (result) {
+                    console.log(result);
+                },
+                error: function (req, status, error) {
+                    console.log(status);
+                }
+            });
+        }
+        else {
+            alert("Plese Input First");
+        }
+
+
+    });
+
+    connection.on("GetUsersWithMessages", function (newMessages) {
+
+        $(".messageWithUser").empty();
+        newMessages.forEach(function (message) {
+          
+            let userLink = $("<div>", {
+                html: `<h5>${message.senderName}</h5><p><strong>${message.message.text}</strong></p>`,
+                class: "messageList",
+                click: function () {
+                    receiverId = message.senderId;
+                    $("#userName").text(message.senderName);
+                    $("#profileLink").text("View Profile");
+                    connection.invoke("GetMessages", message.senderId);
+                }
+            });
+            $(".messageWithUser").append(userLink);
+        });
+    });
 
     connection.on("ReceiveAllUsers", function (users) {
         $("#usersList").empty();
@@ -225,6 +275,13 @@ $(document).ready(function () {
             });
     }
 
+    function GetMessagesWithUsers() {
+        connection.invoke("GetUsersWithMessages")
+            .catch(function (err) {
+                return console.error(err.toString());
+            });
+    }
+
     function scrollChatContainer() {
         var chatContainer = $('.chat-container');
         if (chatContainer.is(':visible')) {
@@ -235,6 +292,7 @@ $(document).ready(function () {
     connection.start().then(function () {
         GetAllUsers();
         GetNewMesage();
+        GetMessagesWithUsers();
     })
         .catch(function (err) {
             console.error(err.toString());

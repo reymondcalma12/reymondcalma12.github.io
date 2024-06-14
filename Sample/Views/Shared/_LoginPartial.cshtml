@@ -24,11 +24,20 @@
         </li>
     </ul>
 </div>
+<script>
+    $(".profBtn").on("click", function () {
 
+        $("#usersName").text(@Model.Name);
+        $("#usersUserName").text(@Model.UserName);
+        $("#usersNumber").text(@Model.PhoneNumber);
+        $("#edit").show();
+
+    });
+</script>
 
 <div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdropLabel" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content" style="border-radius:2rem;">
+        <div class="modal-content" style="border-radius:1rem;">
             <div class="modal-header d-flex">
 
                 <div class="d-flex w-100 justify-content-center head">
@@ -52,20 +61,20 @@
                         }
                     </div>
                     <div class="profilePersonal text-center">
-                        <h5>@Model.Name</h5>
+                        <h5 id="usersName">@Model.Name</h5>
                     </div>
                 </div>
                 <div class="prof2">
                     <div class="prof21">
                         <h6>UserName:</h6>
-                        <h6>@Model.UserName</h6>
+                        <h6 id="usersUserName">@Model.UserName</h6>
                     </div>
                     <div class="prof22">
                         <h6>Phone Number:</h6>
-                        <h6>@Model.PhoneNumber</h6>
+                        <h6 id="usersNumber">@Model.PhoneNumber</h6>
                     </div>
                     <div class="prof23">
-                        <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#exampleModalCenter2" style="border-radius:.8rem;">
+                        <button type="button" id="edit" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#exampleModalCenter2" style="border-radius:.8rem;">
                             Edit Profile
                         </button>
                     </div>
@@ -79,7 +88,7 @@
     <div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdropLabel" id="exampleModalCenter2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
 
-            <div class="modal-content" style="border-radius:2rem;">
+            <div class="modal-content" style="border-radius:1rem;">
                 <div class="modal-header d-flex">
 
                     <div class="d-flex w-100 justify-content-center head">

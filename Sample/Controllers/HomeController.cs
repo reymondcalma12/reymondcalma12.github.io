@@ -35,12 +35,13 @@ namespace Sample.Controllers
 
                     if (up != null)
                     {
-                          ViewData["ProfileUpdated"] = HttpContext.Session.GetString("updatedProfile");
+                          ViewData["ProfileUpdated"] = up;
+
+                          HttpContext.Session.Remove("updatedProfile");
+                          
                     }
          
-
-                    AppUser model = dbContext.Users.FirstOrDefault(a => a.Id == user);
-                    
+                    AppUser model = dbContext.Users.FirstOrDefault(a => a.Id == user);                 
                     return View(model);
 
                 }

@@ -33,22 +33,33 @@
 
 <div class="container-fluid h-100 index-body d-flex justify-content-center">
     <div class="row w-100 d">
-        <div class="col-3 d-flex align-items-center flex-column justify-content-end justify-content-between" style="border:1px solid black; border-top:none;">
-
-
+        <div class="col-3 d-flex align-items-center flex-column " style="border:1px solid black; border-top:none;">
+            <div class="searchDiv">
+                <div class="search">
+                    <input type="text" class="form-control form-control" id="searchText" style="border-radius:3px;"/>
+                    <button class="btn btn-outline-dark searchBtn" style="border:none;"><i class="material-icons">search</i></button>
+                </div>
+            </div>
+            <div class="searchResults">
+    
+   
+            </div>
+            <div class="messageWithUser">
+        
+            </div>
 
         </div>
         <div class="col-7 messages">
             <div class="row h-25 d-flex pt-4 flex-column text-center username">
                 <h1 id="userName"></h1>
-                <a id="profileLink"></a>
+                <a id="profileLink" data-bs-toggle="modal" data-bs-target="#exampleModalCenter"></a>
             </div>
             <div class="row h-75 d-flex justify-content-center align-items-end messageBody">
                 <div class="col-8 chat-container" style="border:1px solid gray;">
                 </div>
                 <div class="row h-10 inputDiv">
                     <form class="d-flex inputField">
-                        <input type="text" class="form-control form-control autoresize" id="messageValue" autocomplete="off" />
+                        <input type="text" class="form-control form-control-lg autoresize" id="messageValue" autocomplete="off" />
                         <button class="btn btn-outline-dark buttonSend"><i class="material-icons">send</i></button>
                     </form>
                 </div>
@@ -59,6 +70,7 @@
             <h4 class="text-center pt-4 pb-2" id="usersHeader">Users</h4>
 
             <div class="users" id="usersList">
+
             </div>
 
         </div>
@@ -66,7 +78,7 @@
 </div>
 
 
-<div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+@* <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
     <div class="toast-header">
         <strong class="mr-auto"> Rizalyn Message you!</strong>
         <small class="text-muted">11 mins ago</small>
@@ -78,17 +90,166 @@
        Heyyy!!
     </div>
 </div>
-
+ *@
 
 
 
 <script>
+
+
     $(document).ready(function () {
         $('.toast').toast('show');
     });
 </script>
 
 <style>
+    .searchResults-users {
+        text-decoration: none;
+        color: black;
+        text-align: center;
+        border-radius: 3px;
+        border: 1px solid black;
+        padding: 5px 0;
+        margin-top: 1%;
+        width:90%;
+    }
+
+    .searchResults-users:hover {
+        cursor: pointer;
+        color: gray;
+        text-decoration:none;
+    }
+
+    .searchResults {
+        border-bottom:1px solid black;
+        height:15vh;
+        width:100%;
+        margin-top:2%;
+        margin-bottom:10%;
+        scrollbar-width: thin;
+        scrollbar-color: gray white;
+        overflow-y: auto;
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+        justify-content:center;
+    }
+    .searchBtn:hover{
+        background:none;
+        color:black;
+    }
+
+    .searchBtn span:hover{
+        color:gray;
+    }
+
+    .searchBtn:focus {
+        box-shadow:none;
+    }
+
+    .btn-outline-dark:not(:disabled):not(.disabled).active:focus, .btn-outline-dark:not(:disabled):not(.disabled):active:focus, .show > .btn-outline-dark.dropdown-toggle:focus {
+        box-shadow: 0 0 0 .1rem rgba(255,255, 255, .5);
+    }
+    .btn-outline-dark:not(:disabled):not(.disabled).active, .btn-outline-dark:not(:disabled):not(.disabled):active, .show > .btn-outline-dark.dropdown-toggle {
+        color: black;
+        background-color: white;
+        border-color: none;
+    }
+    .searchBtn:active {
+        color: black;
+        background-color: white;
+        border-color: none;
+    }
+    .usersProfile{
+        border:1px solid black;
+    }
+    .messageList{
+        width:95%;
+        border: 1px solid black;
+        padding:1px 0;
+        text-align:center;
+        border-radius:3px;
+        margin-top:3%;
+        display:flex;
+        flex-direction:column;
+        box-shadow: -1px 2px 5px 0px rgba(0,0,0,0.58);
+        -webkit-box-shadow: -1px 2px 5px 0px rgba(0,0,0,0.58);
+        -moz-box-shadow: -1px 2px 5px 0px rgba(0,0,0,0.58);
+    }
+
+    .messageList:hover{
+        cursor:pointer;
+    }
+    .messageList p{
+        overflow-x:hidden;
+        width:80%;
+        align-self:center;
+            font-family: 'Nunito', Arial, sans-serif;
+        }
+    .messageList h5{
+       
+            font-family: 'Montserrat', sans-serif;
+    }
+    .messageWithUser {
+        height: 60vh;
+        width: 100%;
+        border-radius: 1rem 1rem 0 0;
+        display: flex;
+        flex-direction:column;
+        align-items:center;
+        scrollbar-width: thin;
+        scrollbar-color: gray white;
+        overflow-y: auto;
+      
+    }
+    input[type=text]:focus {
+        color: #212529;
+        background-color: #fff; 
+        border-color: black; 
+        box-shadow: 0 0 0 .10rem rgba(0, 0, 0, .25); 
+    }
+    .searchUser{
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        height:60%;
+        border-bottom:none;
+        width:100%;
+        flex-direction:column;
+        scrollbar-width: thin;
+        scrollbar-color: gray white;
+        overflow-y: auto;
+    }
+
+    .userSearch{
+        width:80%;
+        text-decoration: none;
+        color: black;
+        text-align: center;
+        border-radius: 1rem;
+        border: 1px solid black;
+        padding: 5px 0;
+        margin-top: 1%;
+    }
+    .userSearch:hover {
+        cursor: pointer;
+        color: gray;
+        text-decoration:none;
+     }
+    .search{
+        display:flex;
+        height:20%;
+    }
+    .searchDiv {
+        display:flex;
+        border-radius:1rem;
+        width: 100%;
+        height: 8%;
+        border-top:none;
+        margin-top: 3%;
+        justify-content:center;
+    }
+
 
     .alert {
         position: fixed;

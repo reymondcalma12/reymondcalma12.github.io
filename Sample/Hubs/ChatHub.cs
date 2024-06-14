@@ -32,26 +32,33 @@ namespace Sample.Hubs
 
         }
 
-        //public async Task GetUsersWithMessages()
-        //{
-        //    try
-        //    {
-        //        var userId = Context.GetHttpContext().Session.GetString("UsersId");
+        public async Task GetUsersWithMessages()
+        {
+            try
+            {
+                var userId = Context.GetHttpContext().Session.GetString("UsersId");
 
-        //        var messages = _dbContext.Message.Where(a => )
+                var newMessages = (
+                  from m in _dbContext.Message
+                  where m.ReceiverId == userId
+                  join u in _dbContext.Users on m.SenderId equals u.Id
+                  group new { m, u } by new { u.Name, u.Id } into g
+                  select new
+                  {
+                      SenderName = g.Key.Name,
+                      SenderId = g.Key.Id,
+                      Message = g.OrderByDescending(x => x.m.Date).First().m
+                  })
+                  .ToList();
 
-        //        var allUsers = _dbContext.Users.Where((u => u.Id != userId) && ()).ToList();
-
-        //        await Clients.Caller.SendAsync("ReceiveAllUsers", allUsers);
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine($"Error occurred in GetAllUsers: {ex.Message}");
-        //        await Clients.Others.SendAsync("Error", "An error occurred while fetching users.");
-        //    }
-
-        //}
+                await Clients.Caller.SendAsync("GetUsersWithMessages", newMessages);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error occurred in GetAllUsers: {ex.Message}");
+                await Clients.Others.SendAsync("Error", "An error occurred while fetching users.");
+            }
+        }
 
 
         public async Task GetMessages(string receiverId)
