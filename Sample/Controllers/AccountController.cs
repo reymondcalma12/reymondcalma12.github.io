@@ -45,7 +45,7 @@ namespace Sample.Controllers
                 if (result.Succeeded)
                 {
 
-                    var user = db.Users.FirstOrDefault(a => a.UserName == model.Username);
+                    var user = db.Users.FirstOrDefault(a => a.UserName == model.Username);        
 
                     if (user != null)
                     {
@@ -105,6 +105,8 @@ namespace Sample.Controllers
             db.SaveChanges();
             return RedirectToAction("Index", "Home");
         }
+
+
 
         [HttpPost]
         public async Task<IActionResult> Register(RegisterVm model)
